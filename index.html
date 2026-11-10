@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Divide & Discover — Binary Search Lab</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5;font-size:15px;--radius:18px;--teal:#12b8b0;--blue:#6288ff;--amber:#f4b853;--green:#38c89a;--red:#f27d89;--purple:#ab8cff}
+html[data-theme="dark"]{color-scheme:dark;--page:#081425;--surface:#101f34;--surface2:#152741;--surface3:#203451;--text:#e9f2fc;--muted:#9dafca;--edge:#30455f;--grid:rgba(135,167,208,.11);--chip:#192d48;--shadow:0 16px 48px rgba(0,0,0,.16);--main-grad:linear-gradient(140deg,rgba(19,178,180,.12),rgba(103,128,242,.08))}
+html[data-theme="light"]{color-scheme:light;--page:#f3f7fe;--surface:#fff;--surface2:#f3f7fe;--surface3:#e9f1fb;--text:#122640;--muted:#526c8a;--edge:#d0deed;--grid:rgba(57,104,155,.11);--chip:#eaf3fd;--shadow:0 14px 40px rgba(30,56,100,.08);--main-grad:linear-gradient(140deg,rgba(19,178,180,.07),rgba(103,128,242,.08))}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 6% 2%,rgba(16,172,182,.08),transparent 40%),radial-gradient(ellipse at 96% 0,rgba(100,130,255,.08),transparent 36%),var(--page);color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--teal);outline-offset:3px}a{color:var(--teal)}.app{max-width:1510px;margin:0 auto;padding:26px clamp(14px,3vw,36px) 48px}.top{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap}.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.19em;font-weight:800;color:var(--teal)}h1{font-size:clamp(1.65rem,3vw,2.55rem);line-height:1.18;letter-spacing:-.045em;margin:7px 0 7px}h2{margin:0 0 12px;font-size:1.1rem;letter-spacing:-.02em}h3{margin:0 0 9px;font-size:.98rem}.lead{color:var(--muted);max-width:760px;margin:0}.heading-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pill{padding:6px 10px;border:1px solid var(--edge);border-radius:99px;color:var(--muted);font-size:.77rem;font-weight:700;background:var(--surface)}.btn{border:1px solid var(--edge);border-radius:11px;background:var(--surface2);color:var(--text);padding:10px 13px;font-weight:750;transition:background .15s,border-color .15s,transform .12s}.btn:hover:not(:disabled){background:var(--surface3);border-color:var(--teal)}.btn:active:not(:disabled){transform:translateY(1px)}.btn.primary{background:var(--teal);color:#071f28;border-color:transparent}.btn.primary:hover:not(:disabled){background:#2ccec5}.btn.small{font-size:.82rem;padding:7px 10px}.theme{display:flex;align-items:center;gap:7px}.card{background:var(--surface);border:1px solid var(--edge);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;min-width:0}.layout{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(300px,.82fr);gap:18px}.leftcol,.rightcol{display:grid;gap:18px;align-content:start;min-width:0}.section-note{font-size:.82rem;color:var(--muted);margin:0}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field{display:grid;gap:6px;min-width:0}.field label{font-size:.78rem;font-weight:800;color:var(--muted)}input[type=number],input[type=text],select{background:var(--surface2);border:1px solid var(--edge);border-radius:10px;padding:10px 11px;color:var(--text);min-width:0;width:100%}input[type=range]{width:100%;accent-color:var(--teal)}.mini-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.tiny{font-size:.75rem;color:var(--muted)}.quicktargets{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:11px}.quicktargets strong{font-size:.77rem;color:var(--muted);margin-right:3px}.chip{border:1px solid var(--edge);background:var(--chip);color:var(--text);font-size:.82rem;border-radius:9px;padding:5px 9px;font-weight:700}.chip:hover{border-color:var(--teal)}.custom-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:11px}.message{font-size:.83rem;color:var(--muted);margin:8px 0 0;min-height:1.3em}.message.error{color:var(--red)}.viz{background:var(--main-grad),var(--surface)}.statusline{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.state-pill{border:1px solid var(--edge);background:var(--surface2);padding:5px 10px;border-radius:99px;color:var(--muted);font-size:.79rem;font-weight:800}.state-pill.active{color:var(--teal);border-color:currentColor}.state-pill.good{color:var(--green);border-color:currentColor}.state-pill.bad{color:var(--red);border-color:currentColor}.readout{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:14px 0 15px}.metric{background:var(--surface2);border:1px solid var(--edge);border-radius:12px;padding:10px;min-width:0}.metric .label{font-size:.7rem;font-weight:700;letter-spacing:.01em;color:var(--muted)}.metric .number{font-size:1.25rem;letter-spacing:-.02em;font-weight:850;font-variant-numeric:tabular-nums;min-height:30px}.metric .number.success{color:var(--green)}.array-scroll{overflow-x:auto;overscroll-behavior-inline:contain;padding:16px 5px 15px;scrollbar-color:var(--edge) transparent}.array{display:flex;gap:8px;width:max-content;min-width:100%;justify-content:center}.array-cell{position:relative;flex:0 0 69px;min-height:95px;border:2px solid var(--edge);border-radius:15px;background:var(--surface);color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:opacity .25s,background .25s,border-color .25s,transform .25s;box-shadow:0 5px 0 rgba(0,0,0,.05)}.array-cell .idx{font-size:.67rem;font-weight:800;color:var(--muted)}.array-cell .value{font-size:1.85rem;font-weight:850;line-height:1.1;font-variant-numeric:tabular-nums}.array-cell .pointer{font-size:.61rem;font-weight:850;white-space:nowrap;min-height:14px;color:var(--muted)}.array-cell.removed{opacity:.32;border-style:dashed;box-shadow:none}.array-cell.mid{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 17%,var(--surface));transform:translateY(-5px)}.array-cell.found{border-color:var(--green);background:color-mix(in srgb,var(--green) 17%,var(--surface));transform:translateY(-5px)}.array-cell.mid .pointer{color:var(--amber)}.array-cell.found .pointer{color:var(--green)}.array-cell.end-left:not(.mid):not(.found){border-color:var(--blue)}.array-cell.end-right:not(.mid):not(.found){border-color:var(--purple)}.array-cell:hover{filter:brightness(1.06)}.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.74rem}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--blue);margin-right:6px}.dot.midpoint{background:var(--amber)}.dot.discarded{background:var(--muted);opacity:.45}.dot.success{background:var(--green)}.narration{border-left:3px solid var(--teal);padding:10px 13px;background:var(--surface2);border-radius:0 12px 12px 0;margin-top:16px;min-height:91px}.narration strong{display:block;margin-bottom:4px}.narration p{margin:0;color:var(--muted);font-size:.88rem}.transport{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}.transport .btn{white-space:nowrap}.timeline{margin-top:13px}.timeline-meta{display:flex;justify-content:space-between;gap:10px;font-size:.78rem;color:var(--muted);font-weight:700;margin-bottom:5px}.code{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;display:grid;gap:3px}.code-line{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:8px 10px;color:var(--muted);font-size:.79rem;border-radius:9px;border:1px solid transparent}.code-line code{white-space:pre-wrap;overflow-wrap:anywhere}.code-line .line-num{color:var(--muted);opacity:.65;text-align:right}.code-line.hot{background:color-mix(in srgb,var(--teal) 13%,var(--surface));border-color:color-mix(in srgb,var(--teal) 32%,var(--edge));color:var(--text)}.code-line.hot .line-num{color:var(--teal);opacity:1}.comparison{display:grid;gap:11px}.comparison-row{display:grid;grid-template-columns:108px 1fr 65px;align-items:center;gap:9px}.comparison-row .who{font-size:.81rem;font-weight:750}.comparison-row .count{text-align:right;font-variant-numeric:tabular-nums;font-weight:800}.bar-bg{height:13px;background:var(--surface3);border-radius:99px;overflow:hidden}.bar-fill{height:100%;border-radius:99px;min-width:0;transition:width .24s}.bar-fill.binary{background:var(--teal)}.bar-fill.linear{background:var(--purple)}.callout{background:var(--surface2);border:1px dashed var(--edge);padding:12px;border-radius:12px;color:var(--muted);font-size:.83rem;margin-top:12px}.callout strong{color:var(--text)}.history{max-height:242px;overflow:auto}.history table{border-collapse:collapse;width:100%;min-width:440px;font-size:.78rem}.history th,.history td{padding:8px 9px;text-align:left;border-bottom:1px solid var(--edge);white-space:nowrap}.history th{color:var(--muted);font-weight:800}.history tr:nth-child(even){background:var(--surface2)}.history tr.current{background:color-mix(in srgb,var(--teal) 10%,var(--surface))}.history .history-btn{border:0;background:none;color:var(--teal);padding:0;font:inherit;font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:3px}.quiz-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.quiz-card{background:var(--surface2);border:1px solid var(--edge);border-radius:13px;padding:15px;display:grid;align-content:start;gap:8px;min-width:0}.quiz-card .qid{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:900}.quiz-card h3{font-size:.9rem;line-height:1.45;margin:0;min-height:47px}.choice{display:block;text-align:left;padding:8px 9px;background:var(--surface);border:1px solid var(--edge);color:var(--text);font-weight:650;border-radius:9px;font-size:.83rem}.choice.selected{border-color:var(--blue);background:color-mix(in srgb,var(--blue) 12%,var(--surface))}.choice.correct{border-color:var(--green)}.choice.incorrect{border-color:var(--red)}.quiz-msg{margin:0;font-size:.78rem;min-height:0;color:var(--muted);line-height:1.55}.quiz-msg.ok{color:var(--green)}.quiz-msg.no{color:var(--red)}.testbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.testbar #testResult{font-size:.82rem;color:var(--muted)}footer{color:var(--muted);font-size:.8rem;line-height:1.7;margin-top:18px;border-top:1px solid var(--edge);padding-top:14px}.lower{display:grid;gap:18px;margin-top:18px}.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}.info-flex{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.faint{opacity:.78}.text-good{color:var(--green)}.text-danger{color:var(--red)}
+@media(max-width:1030px){.layout{grid-template-columns:minmax(0,1fr)}.rightcol{grid-template-columns:repeat(2,minmax(0,1fr))}.rightcol>.card:last-child{grid-column:1/-1}}
+@media(max-width:730px){.app{padding:17px 12px 34px}.card{padding:15px}.form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.field:last-child{grid-column:1/-1}.readout{grid-template-columns:repeat(2,minmax(0,1fr))}.rightcol{grid-template-columns:minmax(0,1fr)}.rightcol>.card:last-child{grid-column:auto}.quiz-grid{grid-template-columns:minmax(0,1fr)}.quiz-card h3{min-height:0}.heading-actions{width:100%}.top{margin-bottom:14px}.comparison-row{grid-template-columns:88px 1fr 56px}.array{justify-content:flex-start}.array-cell{flex-basis:67px}.transport .btn{flex:1 1 auto}.pill{display:none}}
+@media(max-width:370px){.form-grid{grid-template-columns:1fr}.field:last-child{grid-column:auto}.custom-row{grid-template-columns:1fr}.readout{gap:7px}.array-cell{flex-basis:62px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top">
+  <div>
+    <div class="eyebrow">Algorithm explorer · Computer science</div>
+    <h1>Divide &amp; Discover <span style="color:var(--teal)">/ Binary Search</span></h1>
+    <p class="lead">Shrink a sorted search space one comparison at a time. Follow the pointers, inspect each decision, and compare with a left-to-right linear search.</p>
+  </div>
+  <div class="heading-actions"><span class="pill">100% offline</span><span class="pill">No account</span><button id="themeButton" type="button" class="btn theme" aria-label="Switch to light mode" aria-pressed="false">☀ Light mode</button></div>
+</header>
+<div class="layout">
+ <section class="leftcol" aria-label="Binary search simulation">
+  <div class="card">
+   <div class="card-top"><div><h2>01 · Set up your search</h2><p class="section-note">Indices start at 0. The array must be sorted in increasing order.</p></div><button id="restoreExample" class="btn small" type="button">Restore example</button></div>
+   <div class="form-grid">
+    <div class="field"><label for="arrayPreset">Choose an array</label><select id="arrayPreset"><option value="odd">7 elements · original</option><option value="even">6 elements · even length</option><option value="custom">Custom sorted array</option></select></div>
+    <div class="field"><label for="targetInput">Target value (integer)</label><input id="targetInput" type="number" value="11" step="1" min="-1000000" max="1000000" inputmode="numeric"></div>
+    <div class="field"><label for="speedSelect">Autoplay speed</label><select id="speedSelect"><option value="1400">Slow · 0.6×</option><option value="950" selected>Normal · 1×</option><option value="475">Fast · 2×</option></select></div>
+   </div>
+   <div class="quicktargets" aria-label="Suggested targets"><strong>Try a target:</strong><button class="chip quick" type="button" data-target="7">7 · middle</button><button class="chip quick" type="button" data-target="11">11 · right</button><button class="chip quick" type="button" data-target="8">8 · missing</button><button class="chip quick" type="button" data-target="1">1 · left</button></div>
+   <div class="custom-row"><input type="text" id="customArray" aria-label="Custom comma-separated sorted array" value="1, 3, 5, 7, 9, 11, 13" spellcheck="false" placeholder="e.g. 2, 4, 6, 8, 10, 12"><button id="applyCustom" type="button" class="btn">Apply array</button></div>
+   <p id="inputMessage" class="message" role="status" aria-live="polite">For an even-length example, choose “6 elements” above.</p>
+  </div>
+  <div class="card viz">
+   <div class="card-top"><div><h2>02 · Search space</h2><p class="section-note">Select any array cell to use its value as the target. Follow <b>L</b>, <b>R</b>, and <b>M</b> as the range changes.</p></div><span class="state-pill" id="stageBadge">Ready</span></div>
+   <div class="readout">
+     <div class="metric"><div class="label">Left · L</div><div class="number" id="leftValue">0</div></div>
+     <div class="metric"><div class="label">Right · R</div><div class="number" id="rightValue">6</div></div>
+     <div class="metric"><div class="label">Middle · M</div><div class="number" id="midValue">—</div></div>
+     <div class="metric"><div class="label">Checks so far</div><div class="number" id="checkValue">0</div></div>
+   </div>
+   <div class="array-scroll" aria-label="Sorted array visualization"><div id="arrayView" class="array"></div></div>
+   <div class="legend"><span><i class="dot"></i> Search boundary</span><span><i class="dot midpoint"></i> Midpoint</span><span><i class="dot discarded"></i> Discarded</span><span><i class="dot success"></i> Match found</span></div>
+   <div class="narration" id="narration" role="status" aria-live="polite"><strong>Ready to search</strong><p>Start with the full sorted array.</p></div>
+   <div class="transport" aria-label="Playback controls">
+      <button type="button" id="prevButton" class="btn" title="Previous step (←)">← Previous</button>
+      <button type="button" id="playButton" class="btn primary" title="Play or pause (Space)">▶ Play</button>
+      <button type="button" id="nextButton" class="btn" title="Next step (→)">Next →</button>
+      <button type="button" id="resetButton" class="btn" title="Reset to first step">↺ Reset</button>
+   </div>
+   <div class="timeline"><div class="timeline-meta"><label for="scrubber">Walkthrough progress</label><span id="positionText">Step 0 / 0</span></div><input type="range" id="scrubber" value="0" min="0" max="0" step="1" aria-label="Move to any walkthrough step"></div>
+  </div>
+  <div class="card"><div class="card-top"><div><h2>03 · Pseudocode in action</h2><p class="section-note">Highlighted lines represent the current teaching step, not processor clock cycles.</p></div></div><div class="code" id="pseudocode" aria-label="Binary search pseudocode"></div></div>
+ </section>
+ <aside class="rightcol" aria-label="Algorithm reasoning and comparisons">
+  <div class="card"><h2>Why this decision?</h2><p id="reasonText" class="section-note">The search has not started. Binary search requires a sorted array because it discards half the remaining candidates by comparing with the midpoint.</p><div class="callout" id="resultCallout"><strong>Current result:</strong> Not yet determined.</div></div>
+  <div class="card"><h2>Binary vs. linear search</h2><div class="comparison">
+   <div class="comparison-row"><span class="who">Binary</span><div class="bar-bg"><div class="bar-fill binary" id="binaryBar" style="width:0%"></div></div><span class="count" id="binaryCount">0</span></div>
+   <div class="comparison-row"><span class="who">Linear</span><div class="bar-bg"><div class="bar-fill linear" id="linearBar" style="width:0%"></div></div><span class="count" id="linearCount">0</span></div></div>
+   <p class="section-note" id="comparisonNote" style="margin-top:12px">Binary comparisons completed so far versus the checks a linear scan would require for this target.</p>
+   <div class="callout"><strong>Important:</strong> These bars count <em>element comparisons</em>, not elapsed milliseconds. Binary search is O(log n) and linear search O(n) in the usual array-access model; this one small example cannot measure exact runtime, and binary search requires sorted data.</div>
+  </div>
+  <div class="card"><div class="info-flex"><h2>Comparison history</h2><span class="tiny">Click a step to revisit</span></div><div class="history" style="overflow-x:auto"><table aria-label="Comparison history"><thead><tr><th>Check</th><th>Range [L, R]</th><th>Mid</th><th>A[mid]</th><th>Decision</th></tr></thead><tbody id="historyBody"><tr><td colspan="5">No comparisons yet.</td></tr></tbody></table></div></div>
+ </aside>
+</div>
+<section class="lower" aria-label="Guided practice and verification">
+ <div class="card"><div class="card-top"><div><h2>04 · Check your understanding</h2><p class="section-note">Three guided questions. You can change your answers and try again.</p></div><span id="quizScore" class="state-pill">0 / 3 correct</span></div>
+ <div class="quiz-grid">
+  <article class="quiz-card"><span class="qid">Question 1 · Midpoint</span><h3 id="q1Question">Which index is checked first?</h3><label class="tiny" for="q1Answer">Enter a zero-based index</label><input type="number" id="q1Answer" step="1" min="0" inputmode="numeric" placeholder="Index"><button type="button" class="btn small" id="q1Check">Check index</button><p id="q1Feedback" class="quiz-msg" role="status" aria-live="polite"></p></article>
+  <article class="quiz-card"><span class="qid">Question 2 · Elimination</span><h3>If A[mid] is smaller than the target, which part do we keep?</h3><button class="choice" type="button" data-q="2" data-answer="left">Left half including mid</button><button class="choice" type="button" data-q="2" data-answer="right">Right of mid</button><button class="choice" type="button" data-q="2" data-answer="all">Entire array unchanged</button><p id="q2Feedback" class="quiz-msg" role="status" aria-live="polite"></p></article>
+  <article class="quiz-card"><span class="qid">Question 3 · Efficiency</span><h3>What can this small-array example tell us about runtime?</h3><button class="choice" type="button" data-q="3" data-answer="exact">The exact execution time on every computer</button><button class="choice" type="button" data-q="3" data-answer="comparisons">Comparison counts for this example, not exact runtime</button><button class="choice" type="button" data-q="3" data-answer="constant">That binary search always takes one check</button><p id="q3Feedback" class="quiz-msg" role="status" aria-live="polite"></p></article>
+ </div><div style="margin-top:12px"><button class="btn small" id="clearQuiz" type="button">Clear quiz answers</button></div></div>
+ <div class="card"><div class="card-top"><div><h2>05 · Verify the algorithm</h2><p class="section-note">Run deterministic unit tests across empty, odd/even, missing, negative, and randomized sorted arrays. Compare every result against a reference linear lookup.</p></div><button class="btn small" id="runTests" type="button">Run self-tests</button></div><div class="testbar"><span id="testResult" aria-live="polite" role="status">Self-tests have not been run in this session.</span></div></div>
+</section>
+<footer><strong>Assumptions:</strong> Integers are sorted in strictly increasing order; each access and comparison is counted as one search check; indices start at zero. For even lengths, the lower of the two central elements is chosen first via <code>floor((left + right) / 2)</code>. “Not found” occurs when <code>left &gt; right</code>. Linear search scans left to right. The simulation is for algorithm understanding, not a CPU timing benchmark. No data leaves this browser.</footer>
+</main>
+<script>
+"use strict";
+(() => {
+  const DEFAULT = [1,3,5,7,9,11,13];
+  const EVEN = [1,3,5,7,9,11];
+  const LINES = [
+    'left = 0; right = length(A) - 1',
+    'while left <= right:',
+    '    mid = left + floor((right - left) / 2)',
+    '    if A[mid] == target: return mid',
+    '    if A[mid] < target:',
+    '        left = mid + 1',
+    '    else:',
+    '        right = mid - 1',
+    'return NOT_FOUND'
+  ];
+  const $ = (id) => document.getElementById(id);
+  let state = { array:[...DEFAULT], target:11, trace:[], cursor:0, timer:null, playing:false, quiz:{1:null,2:null,3:null} };
+  // Pure algorithm: every trace entry describes a complete, internally consistent state.
+  function makeTrace(A, target) {
+    if (!Array.isArray(A) || !Number.isSafeInteger(target)) throw Error('Invalid input to search.');
+    let L=0, R=A.length-1, checks=0;
+    const T = [{kind:'ready', left:L, right:R, mid:null, checks, lines:[1], result:null, done:false,
+      title:'Ready to search', explanation:'All indices are still candidates. The next step will inspect the middle element.', decision:'—'}];
+    while(L<=R){
+      const M=L+Math.floor((R-L)/2), v=A[M]; checks++;
+      if(v===target){
+        T.push({kind:'found',left:L,right:R,mid:M,checks,lines:[3,4],result:M,done:true,
+          title:'Match found!',explanation:`A[${M}] = ${v}, which equals target ${target}. The search ends after ${checks} comparison${checks===1?'':'s'}.`,decision:'Equal → found'});
+        return T;
+      }
+      const smaller=v<target;
+      T.push({kind:'compare',left:L,right:R,mid:M,checks,lines:smaller?[3,5]:[3,7],result:null,done:false,
+        title:`Comparison ${checks}: ${v} ${smaller?'<':'>'} ${target}`,
+        explanation:smaller?`Because the middle value ${v} is smaller than ${target}, all values at and left of index ${M} can be removed.`:`Because the middle value ${v} is larger than ${target}, all values at and right of index ${M} can be removed.`,
+        decision:smaller?'Target larger → move L':'Target smaller → move R'});
+      const oldL=L, oldR=R;
+      if(smaller)L=M+1; else R=M-1;
+      T.push({kind:'narrow',left:L,right:R,mid:M,checks,lines:[smaller?6:8],result:null,done:false,
+        title:smaller?`Discard indices ${oldL}–${M}`:`Discard indices ${M}–${oldR}`,
+        explanation:smaller?`Move left to ${L}. Values at indices ${oldL} through ${M} are excluded; next search interval: [${L}, ${R}].`:`Move right to ${R}. Values at indices ${M} through ${oldR} are excluded; next search interval: [${L}, ${R}].`,
+        decision:smaller?`L ← ${L}`:`R ← ${R}`});
+    }
+    T.push({kind:'not-found',left:L,right:R,mid:null,checks,lines:[9],result:-1,done:true,
+      title:`${target} is not in this array`,explanation:`The search window is empty (left ${L} > right ${R}). After ${checks} comparisons, the algorithm correctly returns NOT_FOUND.`,decision:'Range empty'});
+    return T;
+  }
+  function linearChecks(A,target){
+    for(let i=0;i<A.length;i++) if(A[i]===target)return i+1;
+    return A.length;
+  }
+  const fmt=(n)=>String(n);
+  function stopPlayback(){ if(state.timer!==null)clearInterval(state.timer);state.timer=null;state.playing=false;updatePlayButton(); }
+  function updatePlayButton(){ $('playButton').textContent=state.playing?'❚❚ Pause':'▶ Play';$('playButton').setAttribute('aria-pressed', String(state.playing)); }
+  function restartTrace(){stopPlayback();state.trace=makeTrace(state.array,state.target);state.cursor=0;render();}
+  function setStep(i){state.cursor=Math.max(0,Math.min(state.trace.length-1,i));render();}
+  function next(){if(state.cursor<state.trace.length-1){setStep(state.cursor+1);return true;}stopPlayback();return false;}
+  function previous(){stopPlayback();setStep(state.cursor-1);}
+  function togglePlay(){
+    if(state.playing){stopPlayback();return;}
+    if(state.cursor>=state.trace.length-1)state.cursor=0;
+    state.playing=true;updatePlayButton();render();
+    state.timer=setInterval(()=>{next();if(state.cursor===state.trace.length-1)stopPlayback();}, Number($('speedSelect').value));
+  }
+  function setTarget(raw){
+    if(typeof raw==='string' && raw.trim()==='')return showInputMessage('Target cannot be empty.',true);
+    const n=Number(raw);
+    if(!Number.isSafeInteger(n)||Math.abs(n)>1000000)return showInputMessage('Enter a whole-number target from −1,000,000 to 1,000,000.',true);
+    state.target=n;$('targetInput').value=fmt(n);showInputMessage(`Target set to ${n}. Search reset to the beginning.`);restartTrace();
+  }
+  function showInputMessage(str,error=false){$('inputMessage').textContent=str;$('inputMessage').classList.toggle('error',error);}
+  function setArray(A,label){state.array=[...A];$('customArray').value=state.array.join(', ');$('targetInput').value=fmt(state.target);showInputMessage(`${label} · ${A.length} sorted values. Search reset.`);clearQuiz();restartTrace();}
+  function parseCustom(str){
+    const parts=str.split(',').map(s=>s.trim());
+    if(parts.length<2||parts.length>24||parts.some(s=>!/^[-+]?\d+$/.test(s)))throw Error('Enter 2–24 integers, separated by commas.');
+    const A=parts.map(Number);
+    if(A.some(v=>!Number.isSafeInteger(v)||Math.abs(v)>999999))throw Error('Each array value must be an integer between −999,999 and 999,999.');
+    for(let i=1;i<A.length;i++)if(A[i]<=A[i-1])throw Error(`Array must be strictly increasing: ${A[i-1]} must be less than ${A[i]}.`);
+    return A;
+  }
+  function renderArray(s){
+    const root=$('arrayView');root.replaceChildren();
+    state.array.forEach((v,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='array-cell';
+      const eliminated=i<s.left||i>s.right;
+      if(eliminated)b.classList.add('removed');
+      if(i===s.left&&!eliminated)b.classList.add('end-left');
+      if(i===s.right&&!eliminated)b.classList.add('end-right');
+      if(i===s.mid && s.kind==='found')b.classList.add('found');
+      else if(i===s.mid&&(s.kind==='compare'||s.kind==='found'))b.classList.add('mid');
+      const mark=[];
+      if(i===s.left&&!eliminated)mark.push('L');
+      if(i===s.right&&!eliminated)mark.push('R');
+      if(i===s.mid&&(s.kind==='compare'||s.kind==='found'))mark.push('M');
+      const idx=document.createElement('span');idx.className='idx';idx.textContent=`index ${i}`;
+      const value=document.createElement('span');value.className='value';value.textContent=fmt(v);if(String(v).length>=5)value.style.fontSize='1.02rem';else if(String(v).length>=4)value.style.fontSize='1.3rem';
+      const pointer=document.createElement('span');pointer.className='pointer';pointer.textContent=mark.join(' · ')||' ';
+      b.append(idx,value,pointer);
+      b.title=`Index ${i}; value ${v}. Click to choose this as the target.`;
+      b.setAttribute('aria-label',`Index ${i}; value ${v}${eliminated?'; discarded':''}${mark.length?'; '+mark.join(' and '):''}. Choose as target`);
+      b.addEventListener('click',()=>setTarget(v));root.appendChild(b);
+    });
+  }
+  function renderHistory(s){
+    const rows=$('historyBody');rows.replaceChildren();
+    let count=0;
+    state.trace.forEach((e,i)=>{
+      if(i>state.cursor||!['compare','found'].includes(e.kind))return;
+      count++;
+      const tr=document.createElement('tr');if(i===state.cursor)tr.className='current';
+      const values=[e.checks,`[${e.left}, ${e.right}]`,e.mid,state.array[e.mid]];
+      values.forEach((txt,j)=>{
+        const td=document.createElement('td');
+        if(j===0){const btn=document.createElement('button');btn.type='button';btn.className='history-btn';btn.textContent=String(txt);btn.title='Revisit this comparison';btn.addEventListener('click',()=>{stopPlayback();setStep(i);});td.appendChild(btn);} else td.textContent=String(txt);
+        tr.appendChild(td);
+      });
+      const d=document.createElement('td');d.textContent=e.decision;tr.appendChild(d);rows.appendChild(tr);
+    });
+    if(!count){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=5;td.textContent='No comparisons yet. Choose Next or Play.';tr.appendChild(td);rows.appendChild(tr);}
+  }
+  function render(){
+    const s=state.trace[state.cursor],A=state.array;
+    $('leftValue').textContent=s.left;
+    $('rightValue').textContent=s.right;
+    $('midValue').textContent=s.mid===null?'—':s.mid;
+    $('checkValue').textContent=s.checks;
+    $('stageBadge').textContent=({ready:'Ready',compare:'Compare',narrow:'Narrow range',found:'Found', 'not-found':'Not found'})[s.kind];
+    $('stageBadge').className=`state-pill ${s.done?(s.kind==='found'?'good':'bad'):'active'}`;
+    renderArray(s);
+    $('narration').replaceChildren();
+    const strong=document.createElement('strong');strong.textContent=s.title;const p=document.createElement('p');p.textContent=s.explanation;
+    $('narration').append(strong,p);
+    $('reasonText').textContent=s.kind==='ready'?`The initial interval is [0, ${A.length-1}]. We can eliminate half a sorted interval because every value to one side of its midpoint is smaller or larger.`:s.explanation;
+    let resultText='Not yet determined.';
+    if(s.kind==='found')resultText=`Found target ${state.target} at index ${s.result}, after ${s.checks} comparisons.`;
+    else if(s.kind==='not-found')resultText=`Target ${state.target} is absent, confirmed after ${s.checks} comparisons.`;
+    else if(s.kind==='narrow')resultText=s.left>s.right?'Candidate interval is empty. Next step will return NOT_FOUND.':`Remaining candidate indices: ${s.left} through ${s.right}.`;
+    else if(s.kind==='compare')resultText=`Compared target ${state.target} with A[${s.mid}] = ${A[s.mid]}.`;
+    $('resultCallout').replaceChildren();const label=document.createElement('strong');label.textContent='Current result: ';$('resultCallout').append(label,document.createTextNode(resultText));
+    [...$('pseudocode').children].forEach((el,i)=>el.classList.toggle('hot',s.lines.includes(i+1)));
+    $('prevButton').disabled=state.cursor===0;$('nextButton').disabled=state.cursor===state.trace.length-1;
+    $('scrubber').max=String(state.trace.length-1);$('scrubber').value=String(state.cursor);
+    $('positionText').textContent=`Step ${state.cursor} / ${state.trace.length-1}`;
+    const linear=linearChecks(A,state.target);
+    $('binaryCount').textContent=String(s.checks)+(s.done?' checks':' so far');
+    $('linearCount').textContent=String(linear)+' checks';
+    $('binaryBar').style.width=`${Math.min(100,100*s.checks/Math.max(1,A.length))}%`;
+    $('linearBar').style.width=`${Math.min(100,100*linear/Math.max(1,A.length))}%`;
+    const total=state.trace[state.trace.length-1].checks;
+    $('comparisonNote').textContent=s.done?
+      `For target ${state.target}, binary search took ${total} comparison${total===1?'':'s'} and linear search would take ${linear}. These are comparison counts, not wall-clock timings.`:
+      `Binary search has made ${s.checks} check${s.checks===1?'':'s'} so far; linear search would take ${linear} to finish. Complete the animation for a fair count comparison.`;
+    renderHistory(s);
+  }
+  function clearQuiz(){state.quiz={1:null,2:null,3:null};['q1Answer'].forEach(id=>$(id).value='');
+    [1,2,3].forEach(i=>{const e=$(`q${i}Feedback`);e.textContent='';e.className='quiz-msg';});
+    document.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected','correct','incorrect'));updateQuizScore();
+  }
+  function updateQuizScore(){$('quizScore').textContent=`${Object.values(state.quiz).filter(v=>v===true).length} / 3 correct`;}
+  function feedback(n,okay,message){state.quiz[n]=okay;const el=$(`q${n}Feedback`);el.className='quiz-msg '+(okay?'ok':'no');el.textContent=(okay?'✓ Correct. ':'✗ Try again. ')+message;updateQuizScore();}
+  function evaluateQuiz1(){const raw=$('q1Answer').value, mid=Math.floor((state.array.length-1)/2);
+    if(raw.trim()===''||!Number.isInteger(Number(raw))){$('q1Feedback').textContent='Enter a whole-number index first.';return;}
+    feedback(1,Number(raw)===mid,`With n = ${state.array.length}, left = 0 and right = ${state.array.length-1}, floor((left + right)/2) = ${mid}. Even-length arrays choose the lower midpoint.`);
+  }
+  function evaluateChoice(btn){const n=Number(btn.dataset.q),ans=btn.dataset.answer,correct=n===2?'right':'comparisons';
+    document.querySelectorAll(`.choice[data-q="${n}"]`).forEach(b=>b.classList.remove('selected','correct','incorrect'));
+    btn.classList.add('selected',ans===correct?'correct':'incorrect');
+    if(n===2)feedback(2,ans===correct,'When A[mid] is smaller than the target, the target (if present) must lie strictly to the right of mid. Set left = mid + 1.');
+    else feedback(3,ans===correct,'This run illustrates comparison counts. Real elapsed time also depends on hardware, memory, implementation, and the input size; asymptotic growth is a separate theoretical claim.');
+  }
+  function selfTests(){
+    let assertions=0, cases=0;
+    function assert(ok,msg){assertions++;if(!ok)throw Error(`Test failed: ${msg}`);}
+    function test(A,target){
+      cases++;const trace=makeTrace(A,target),end=trace[trace.length-1],expected=A.indexOf(target);
+      assert(end.done,'must terminate');assert(end.result===expected,`result mismatch A=${A}, target=${target}`);
+      let lastChecks=0;
+      for(const s of trace){
+        assert(s.checks>=lastChecks,'comparison counter monotonic');lastChecks=s.checks;
+        if(s.kind==='compare'||s.kind==='found'){
+          assert(s.mid===s.left+Math.floor((s.right-s.left)/2),'mid floor formula');
+          assert(s.mid>=0&&s.mid<A.length,'mid in bounds');
+          assert(s.checks>0,'comparison count positive');
+        }
+      }
+      const count=trace.filter(s=>s.kind==='compare'||s.kind==='found').length;
+      assert(end.checks===count,'each compared midpoint counts once');
+      assert(end.checks<=Math.ceil(Math.log2(A.length+1)),'binary bound');
+      assert(linearChecks(A,target)===(expected<0?A.length:expected+1),'linear reference count');
+    }
+    [[],[4],[1,3],[1,3,5,7,9,11],[1,3,5,7,9,11,13],[-9,-4,0,2,50]].forEach(A=>[-10,-1,0,1,3,4,5,7,8,11,50,100].forEach(t=>test(A,t)));
+    // Deterministic pseudo-random tests, including more even-length arrays.
+    let seed=246813579;const rnd=()=>{seed=(Math.imul(1664525,seed)+1013904223)>>>0;return seed/4294967296;};
+    for(let k=0;k<2000;k++){
+      const n=Math.floor(rnd()*28),A=[],start=-100+Math.floor(rnd()*40);let v=start;
+      for(let j=0;j<n;j++){v+=1+Math.floor(rnd()*6);A.push(v);}
+      const target=(A.length&&rnd()<.52)?A[Math.floor(rnd()*A.length)]:-120+Math.floor(rnd()*260);
+      test(A,target);
+    }
+    return {passed:true,cases,assertions};
+  }
+  function wireEvents(){
+    $('arrayPreset').addEventListener('change',e=>{
+      if(e.target.value==='odd')setArray(DEFAULT,'Original odd-length array');
+      else if(e.target.value==='even')setArray(EVEN,'Even-length array');
+      else {showInputMessage('Edit the comma-separated numbers and choose Apply array.');$('customArray').focus();}
+    });
+    $('targetInput').addEventListener('change',e=>{const prev=state.target;setTarget(e.target.value);if(state.target===prev&&e.target.value!==String(prev))e.target.value=String(prev);});
+    document.querySelectorAll('.quick').forEach(b=>b.addEventListener('click',()=>setTarget(b.dataset.target)));
+    $('applyCustom').addEventListener('click',()=>{try{const A=parseCustom($('customArray').value);$('arrayPreset').value='custom';setArray(A,'Custom array applied');}catch(e){showInputMessage(e.message,true);}});
+    $('customArray').addEventListener('keydown',e=>{if(e.key==='Enter'){$('applyCustom').click();}});
+    $('restoreExample').addEventListener('click',()=>{$('arrayPreset').value='odd';state.target=11;$('targetInput').value='11';setArray(DEFAULT,'Original example restored');});
+    $('nextButton').addEventListener('click',()=>{stopPlayback();next();});
+    $('prevButton').addEventListener('click',previous);
+    $('playButton').addEventListener('click',togglePlay);
+    $('resetButton').addEventListener('click',restartTrace);
+    $('speedSelect').addEventListener('change',()=>{if(state.playing){stopPlayback();togglePlay();}});
+    $('scrubber').addEventListener('input',e=>{stopPlayback();setStep(Number(e.target.value));});
+    $('q1Check').addEventListener('click',evaluateQuiz1);
+    $('q1Answer').addEventListener('keydown',e=>{if(e.key==='Enter')evaluateQuiz1();});
+    document.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>evaluateChoice(b)));
+    $('clearQuiz').addEventListener('click',clearQuiz);
+    $('runTests').addEventListener('click',()=>{try{const {cases,assertions}=selfTests();$('testResult').textContent=`✓ PASS — ${cases.toLocaleString()} search cases and ${assertions.toLocaleString()} assertions. Includes even-length arrays, missing targets, and empty arrays.`;$('testResult').className='text-good';}catch(err){$('testResult').textContent=`✗ ${err.message}`;$('testResult').className='text-danger';}});
+    $('themeButton').addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;const dark=next==='dark';$('themeButton').textContent=dark?'☀ Light mode':'☾ Dark mode';$('themeButton').setAttribute('aria-label',dark?'Switch to light mode':'Switch to dark mode');$('themeButton').setAttribute('aria-pressed',String(!dark));try{localStorage.setItem('binary-search-lab-theme',next);}catch(_){}});
+    document.addEventListener('keydown',e=>{const tag=e.target?.tagName?.toLowerCase();if(['input','select','textarea','button'].includes(tag)||e.altKey||e.ctrlKey||e.metaKey)return;
+      if(e.key==='ArrowRight'){e.preventDefault();stopPlayback();next();}else if(e.key==='ArrowLeft'){e.preventDefault();previous();}else if(e.code==='Space'){e.preventDefault();togglePlay();}});
+  }
+  function init(){
+    $('pseudocode').replaceChildren();LINES.forEach((txt,i)=>{const row=document.createElement('div');row.className='code-line';const n=document.createElement('span');n.className='line-num';n.textContent=i+1;const code=document.createElement('code');code.textContent=txt;row.append(n,code);$('pseudocode').appendChild(row);});
+    $('q1Question').textContent='For this array, what is the FIRST midpoint index?';
+    wireEvents();
+    try{const saved=localStorage.getItem('binary-search-lab-theme');if(saved==='light')$('themeButton').click();}catch(_){ }
+    restartTrace();
+  }
+  // Available for classroom QA and browser-based automated tests.
+  window.BinarySearchLab = Object.freeze({makeTrace,linearChecks,selfTests,parseCustom,readState:()=>({array:[...state.array],target:state.target,cursor:state.cursor,step:state.trace[state.cursor],traceLength:state.trace.length})});
+  init();
+})();
+</script>
+</body>
+</html>
